@@ -1,307 +1,100 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>STATION DU CYCLES – دراجات نارية</title>
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
-  <!-- Leaflet (OSM) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
-  <!-- Local styles -->
-  <link rel="stylesheet" href="/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محطة الدراجات - Station Du Cycles</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
 </head>
+<body>
 
-<body class="theme-dark text-white min-h-screen">
-  <!-- شريط ترحيبي متحرك -->
-  <div class="delivery-banner py-2 text-center text-sm font-bold">
-    <div class="delivery-text">
-      🚀 <strong>مرحباً بكم في عالم السرعة والإثارة – اكتشف أفضل الدراجات النارية لدينا اليوم!</strong> 🏍️🔥
-    </div>
-  </div>
-
-  <!-- بانر معلومات -->
-  <section class="mega-banner container mx-auto px-4 mt-3">
-    <div class="mega-banner-inner">
-      <div class="flex items-center justify-center gap-3 mb-2">
-        <i class="fa-solid fa-truck-fast text-2xl"></i>
-        <span class="mega-title">
-          🚚 توصيل سريع وآمن إلى جميع المدن المغربية — أثمنة مناسبة وخدمة ما بعد البيع ⭐
-        </span>
+  <header class="glass" style="position: sticky; top: 0; z-index: 50;">
+    <nav class="container mx-auto flex items-center justify-between p-4">
+      <a href="#" class="text-2xl font-bold hero-title" data-translate="nav_title">محطة الدراجات</a>
+      <div class="flex items-center gap-2">
+        <a href="https://instagram.com" target="_blank" class="nav-cta"><i class="fab fa-instagram"></i></a>
+        <a href="https://facebook.com" target="_blank" class="nav-cta"><i class="fab fa-facebook"></i></a>
+        <a href="https://wa.me/1234567890" target="_blank" class="nav-cta is-green"><i class="fab fa-whatsapp"></i> <span data-translate="nav_whatsapp">WhatsApp</span></a>
+        <button id="language-toggle" class="nav-cta"><i class="fas fa-globe"></i></button>
+        <button id="theme-toggle" class="nav-cta"><i class="fas fa-sun"></i></button>
       </div>
-      <div class="mega-divider"></div>
-      <div class="flex items-center justify-center gap-2 mt-2">
-        <i class="fa-solid fa-shield-halved"></i>
-        <p class="mega-subtitle">
-          Livraison rapide et sécurisée partout au Maroc — Meilleurs prix & service après-vente.
-        </p>
-      </div>
-    </div>
-  </section>
+    </nav>
+  </header>
 
-  <!-- Navbar -->
-  <nav class="sticky top-0 z-50 glass">
-    <div class="container mx-auto px-4 py-4 grid grid-cols-3 items-center">
-      <!-- يسار: الشعار -->
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-          <i class="fas fa-motorcycle text-white text-lg"></i>
-        </div>
-        <span class="text-xl font-bold neon-glow flex items-center gap-2">
-          STATION DU CYCLES
-          <span class="truck-badge"><i class="fa-solid fa-truck-fast"></i></span>
-        </span>
-      </div>
-
-      <!-- وسط: أزرار الملاحة -->
-      <div class="hidden md:flex justify-center gap-6">
-        <a href="#home"        class="nav-cta is-primary"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
-        <a href="#brands"      class="nav-cta is-pink" id="go-brands"><i class="fa-solid fa-tags"></i><span>الماركات</span></a>
-        <a href="#store-info"  class="nav-cta is-blue"><i class="fa-solid fa-circle-info"></i><span>معلومات المحل</span></a>
-        <a href="#store-hours" class="nav-cta is-green"><i class="fa-regular fa-clock"></i><span>توقيت المحل</span></a>
-      </div>
-
-      <!-- يمين: مبدّل الثيم -->
-      <div class="flex items-center justify-end gap-3">
-        <button id="theme-toggle" class="nav-cta" title="الوضع الداكن" aria-label="Toggle theme">
-          <i id="theme-icon" class="fa-solid fa-moon"></i>
-          <span class="hidden sm:inline">الوضع</span>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ===== قسم الهيرو بالصورة (صورة واحدة فقط) ===== -->
-  <section class="hero-bg">
-    <div class="hero-overlay">
-      <div class="hero-inner">
-        <h1 class="hero-heading text-on-hero">أفضل الدراجات النارية والسكوترات بالمغرب</h1>
-        <p class="hero-tag text-on-hero">جودة مضمونة • تمويل مرن • خدمة ما بعد البيع</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- مرسى الرئيسية -->
-  <div id="home"></div>
-
-  <!-- المحتوى (ثابت هنا) -->
-  <main id="main-content" class="page-content"></main>
-
-  <!-- مرسى الماركات -->
-  <div id="brands" class="anchor-fallback"></div>
-
-  <!-- =============== معلومات المحل =============== -->
-  <section id="store-info" class="container mx-auto px-4 py-16">
-    <h2 class="section-title text-center">معلومات المتجر</h2>
-
-    <div class="grid md:grid-cols-2 gap-10 mt-10">
-      <!-- بطاقات تواصل -->
-      <div class="space-y-4">
-        <div class="info-card">
-          <div class="info-icon bg-purple-600/20 text-purple-300"><i class="fa-solid fa-phone"></i></div>
-          <div><h4 class="font-bold">الهاتف</h4><p class="text-gray-300">+212 608 788 782</p></div>
-        </div>
-        <div class="info-card">
-          <div class="info-icon bg-green-600/20 text-green-300"><i class="fa-brands fa-whatsapp"></i></div>
-          <div><h4 class="font-bold">WhatsApp</h4><p class="text-gray-300">+212 608 788 782</p></div>
-        </div>
-        <div class="info-card">
-          <div class="info-icon bg-blue-600/20 text-blue-300"><i class="fa-solid fa-envelope"></i></div>
-          <div><h4 class="font-bold">Email</h4><p class="text-gray-300">yourstoreemail@gmail.com</p></div>
-        </div>
-        <div class="info-card">
-          <div class="info-icon bg-rose-600/20 text-rose-300"><i class="fa-solid fa-location-dot"></i></div>
-          <div><h4 class="font-bold">العنوان</h4><p class="text-gray-300" id="store-address-text">365, Bd El Fida, Casablanca</p></div>
-        </div>
-      </div>
-
-      <!-- عنوان واضح + خريطة -->
-      <div class="space-y-3">
-        <div class="glass rounded-2xl p-4">
-          <div class="flex items-start gap-3">
-            <i class="fa-solid fa-map-location-dot text-pink-300 text-xl mt-1"></i>
-            <div>
-              <h4 class="font-bold mb-1">الموقع على الخريطة</h4>
-              <p class="text-gray-300 text-sm" id="map-address-small">365, Bd El Fida, Casablanca</p>
-            </div>
-          </div>
-        </div>
-        <div class="rounded-2xl overflow-hidden glass p-2">
-          <div id="map" style="height:420px; border-radius: 14px;"></div>
+  <main id="page-content">
+    <!-- 
+      Your existing page content goes here.
+      For example, the hero section, info cards, etc.
+      I've left this part empty since I don't have your original HTML.
+    -->
+    <div class="hero-bg">
+      <div class="hero-overlay">
+        <div class="hero-inner">
+          <h1 class="hero-heading text-on-hero" data-translate="hero_heading">أفضل الدراجات في المدينة</h1>
+          <p class="hero-tag text-on-hero" data-translate="hero_tag">استكشف، استأجر، انطلق</p>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- =============== توقيت المحل =============== -->
-  <section id="store-hours" class="container mx-auto px-4 py-16">
-    <h2 class="section-title text-center">Store Hours</h2>
-
-    <div class="grid md:grid-cols-2 gap-10 mt-10">
-      <div class="glass rounded-2xl p-6">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-12 h-12 rounded-full bg-purple-600/20 flex items-center justify-center">
-            <i class="fa-regular fa-clock text-purple-300 text-xl"></i>
+    <!-- ===== قسم أسطول الدراجات ===== -->
+    <section class="section-padding">
+      <div class="container mx-auto text-center">
+        <h2 class="section-title mb-12" data-translate="fleet_title">أسطولنا المميز</h2>
+        <div class="bikes-grid">
+          <!-- Bike Card 1 -->
+          <div class="bike-card">
+            <img src="https://i.postimg.cc/pX0ZkL5J/city-bike.png" alt="دراجة المدينة" class="bike-card-img">
+            <h3 class="bike-card-title" data-translate="city_bike_title">دراجة المدينة</h3>
+            <p class="bike-card-desc" data-translate="city_bike_desc">مثالية للتجول في شوارع المدينة بكل راحة وأناقة.</p>
+            <button class="btn-primary mt-4" data-translate="rent_now">استأجر الآن</button>
           </div>
-          <h3 class="text-2xl font-bold">Opening Hours</h3>
-        </div>
-        <div id="hours-list" class="space-y-3">
-          <div class="flex justify-between items-center p-3 rounded-lg today-row">
-            <span class="font-medium">Everyday</span>
-            <span class="text-green-400 font-semibold">09:00 - 19:00</span>
+          <!-- Bike Card 2 -->
+          <div class="bike-card">
+            <img src="https://i.postimg.cc/L86D9D0P/mountain-bike.png" alt="دراجة جبلية" class="bike-card-img">
+            <h3 class="bike-card-title" data-translate="mountain_bike_title">دراجة جبلية</h3>
+            <p class="bike-card-desc" data-translate="mountain_bike_desc">مغامرات لا تنتهي على الطرق الوعرة والجبلية.</p>
+            <button class="btn-primary mt-4" data-translate="rent_now">استأجر الآن</button>
           </div>
-        </div>
-      </div>
+          <!-- Bike Card 3 -->
+          <div class="bike-card">
+            <img src="https://i.postimg.cc/d1mZf8tV/electric-bike.png" alt="دراجة كهربائية" class="bike-card-img">
 
-      <div class="space-y-6">
-        <div class="rounded-2xl p-6 text-white gradient-box">
-          <div class="flex items-center gap-3 mb-3">
-            <i class="fa-regular fa-calendar text-2xl"></i>
-            <h3 class="text-xl font-bold">Today's Status</h3>
           </div>
-          <div class="text-center">
-            <p id="today-status" class="text-2xl font-extrabold mb-1">مفتوح الآن</p>
-            <p id="today-range" class="text-lg opacity-90">09:00 - 19:00</p>
-          </div>
-        </div>
-
-        <!-- بطاقة الكرونو -->
-        <div class="chrono-card glass rounded-2xl p-6">
-          <div class="flex items-center gap-3 mb-3">
-            <i class="fa-solid fa-stopwatch text-xl"></i>
-            <h4 class="text-xl font-bold">العدّاد اليومي (09:00 → 19:00)</h4>
-          </div>
-          <div class="chrono-body">
-            <div class="chrono-badges">
-              <span id="chrono-status" class="badge"></span>
-              <span id="chrono-time-window" class="badge slim">09:00–19:00</span>
-            </div>
-            <div id="chrono-remaining" class="chrono-remaining">00:00:00</div>
-            <div class="chrono-progress">
-              <div id="chrono-progress-bar" class="chrono-bar" style="width:0%;"></div>
-            </div>
-            <small id="chrono-hint" class="chrono-hint">—</small>
-          </div>
-        </div>
-        <!-- /بطاقة الكرونو -->
-
-        <div class="glass rounded-2xl p-6">
-          <h4 class="text-xl font-bold mb-3">ملاحظات خاصة</h4>
-          <ul class="text-gray-300 space-y-1">
-            <li>• متوفر على مدار الاسبوع كامل</li>
-            <li>• عروض خاصة في نهاية الأسبوع</li>
-            <li>• يُفضّل الاتصال قبل الزيارة</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== CTA + FOOTER ===== -->
-  <footer class="relative mt-20">
-    <section class="relative container mx-auto px-4">
-      <div class="rounded-[28px] glass border border-white/10 overflow-hidden">
-        <div class="p-6 sm:p-8 bg-gradient-to-r from-emerald-600/20 via-blue-600/10 to-purple-600/20 border-b border-white/10">
-          <h2 class="text-3xl sm:text-4xl font-black hero-title text-center">هل تريد دراجة مناسبة لك؟</h2>
-          <p class="text-center text-gray-300 mt-2">اترك معلوماتك وسنتواصل معك فوراً لتقديم أفضل العروض وخيارات التمويل.</p>
-        </div>
-
-        <div class="p-6 sm:p-10">
-          <form id="cta-contact-form" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <label class="block mb-2 text-sm text-gray-300">الاسم الكامل *</label>
-              <input type="text" name="fullName" required class="w-full rounded-2xl px-4 py-3.5 bg-black/40 border border-white/15 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400" placeholder="مثل: مصطفى أحمد">
-            </div>
-            <div>
-              <label class="block mb-2 text-sm text-gray-300">رقم الهاتف *</label>
-              <input type="tel" name="phone" required pattern="[0-9+\-\s]{8,}" class="w-full rounded-2xl px-4 py-3.5 bg-black/40 border border-white/15 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400" placeholder="+212 6 00 00 00 00">
-            </div>
-            <div>
-              <label class="block mb-2 text-sm text-gray-300">المدينة</label>
-              <input type="text" name="city" class="w-full rounded-2xl px-4 py-3.5 bg-black/40 border border-white/15 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400" placeholder="الدار البيضاء / طنجة / فاس ...">
-            </div>
-            <div>
-              <label class="block mb-2 text-sm text-gray-300">الماركة / الموديل (اختياري)</label>
-              <input type="text" name="model" class="w-full rounded-2xl px-4 py-3.5 bg-black/40 border border-white/15 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400" placeholder="SYM / KYMCO / ENZO ...">
-            </div>
-            <div class="lg:col-span-2">
-              <label class="block mb-2 text-sm text-gray-300">رسالتك</label>
-              <textarea name="message" rows="4" class="w-full rounded-2xl px-4 py-3.5 bg-black/40 border border-white/15 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400" placeholder="اذكر ميزانيتك، نوع الاستعمال، أو أي سؤال يخطر ببالك..."></textarea>
-            </div>
-            <div class="lg:col-span-2 flex items-start gap-3">
-              <input id="agree" type="checkbox" required class="mt-1 h-5 w-5 rounded border-white/20 bg-black/40">
-              <label for="agree" class="text-gray-300 text-sm">أوافق على الاتصال بي عبر الهاتف أو واتساب لتأكيد الطلب وتقديم العروض.</label>
-            </div>
-            <div class="lg:col-span-2 flex flex-col sm:flex-row gap-4 mt-1">
-              <button type="submit" class="flex-1 btn-primary py-3.5 rounded-2xl text-lg font-bold">أرسل طلبي الآن</button>
-              <a href="https://wa.me/212608788782" target="_blank" class="flex-1 text-center py-3.5 rounded-2xl text-lg font-bold border border-emerald-400/40 hover:bg-emerald-500/10 transition">تواصل واتساب مباشر</a>
-            </div>
-            <div id="cta-success" class="hidden lg:col-span-2 p-4 rounded-xl border border-emerald-400/40 bg-emerald-600/15 text-emerald-300 text-center">✅ تم إرسال طلبك بنجاح! سنتواصل معك قريباً جداً.</div>
-          </form>
         </div>
       </div>
     </section>
 
-    <div class="mt-10 border-t border-white/10">
-      <div class="container mx-auto px-4 py-10 grid md:grid-cols-4 gap-8">
-        <div>
-          <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-              <i class="fas fa-motorcycle text-white text-lg"></i>
+    <!-- ===== قسم الأسعار ===== -->
+    <section class="section-padding">
+        <div class="container mx-auto text-center">
+            <h2 class="section-title mb-12">خطط أسعار مرنة</h2>
+            <div class="pricing-grid">
+                <!-- Pricing Card 1 -->
+                <div class="pricing-card">
+                    <h3 class="pricing-title">الباقة اليومية</h3>
+                    <p class="pricing-price">25 د.م.<span>/يوم</span></p>
+                    <ul class="pricing-features">
+                        <li>وصول غير محدود لمدة 24 ساعة</li>
+                        <li>خوذة وقفل مجاني</li>
+                        <li>تأمين أساسي</li>
+                    </ul>
+                    <button class="btn-primary mt-6">اختر الخطة</button>
+                </div>
             </div>
-            <span class="text-xl font-black neon-glow">STATION DU CYCLES</span>
-          </div>
-          <p class="text-gray-300 mt-4 leading-relaxed">متخصصون في بيع الدراجات النارية والسكوترات مع ضمان وخدمات ما بعد البيع. اختَر راحتك وسنُنجز الباقي.</p>
         </div>
-        <div>
-          <h4 class="text-lg font-bold mb-4 text-blue-400">روابط</h4>
-          <ul class="space-y-2 text-gray-300">
-            <li><a href="#home" class="hover:text-white">الرئيسية</a></li>
-            <li><a href="#brands" class="hover:text-white">الماركات</a></li>
-            <li><a href="#offers" class="hover:text-white">عروض وتمويل</a></li>
-            <li><a href="#contact" class="hover:text-white">اتصل بنا</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-lg font-bold mb-4 text-purple-400">المواعيد</h4>
-          <ul class="space-y-1 text-gray-300">
-            <li>الإثنين – السبت: 9:00–19:00</li>
-            <li>الأحد: مغلق</li>
-            <li class="mt-2"><span>العنوان</span>: <span id="footer-address">365, Bd El Fida, Casablanca</span></li>
-            <li><span>الهاتف</span>: +212 608 788 782</li>
-          </ul>
-          <div class="flex gap-3 mt-4">
-            <a href="https://wa.me/212608788782" target="_blank" class="p-3 rounded-xl bg-emerald-600/20 border border-emerald-400/40 hover:bg-emerald-600/30"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="#" class="p-3 rounded-xl bg-blue-600/20 border border-blue-400/40 hover:bg-blue-600/30"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#" class="p-3 rounded-xl bg-pink-600/20 border border-pink-400/40 hover:bg-pink-600/30"><i class="fa-brands fa-instagram"></i></a>
-          </div>
-        </div>
-        <div>
-          <h4 class="text-lg font-bold mb-4 text-pink-400">اشترك ليصلك كل جديد</h4>
-          <form id="newsletter" class="space-y-3">
-            <input type="email" required placeholder="بريدك الإلكتروني" class="w-full rounded-2xl px-4 py-3 bg-black/40 border border-white/15 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400">
-            <button class="w-full btn-primary py-3 rounded-2xl font-bold">اشترك الآن</button>
-            <p id="news-ok" class="hidden text-emerald-300 text-sm">تم الاشتراك بنجاح ✅</p>
-          </form>
-        </div>
-      </div>
-      <div class="text-center text-gray-300/80 pb-8" id="copyright">
-        © 2025 مصطفى للدراجات النارية. جميع الحقوق محفوظة.
-      </div>
-    </div>
+    </section>
+
+  </main>
+
+  <footer class="main-footer glass">
+    <p>&copy; 2024 محطة الدراجات. كل الحقوق محفوظة.</p>
   </footer>
 
-  <!-- App (كل المنطق هنا) -->
-  <script type="module" src="/app.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>

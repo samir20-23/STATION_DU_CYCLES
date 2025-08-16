@@ -1,13 +1,58 @@
-/* أساسيات */
-* { font-family: 'Cairo', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-html, body { height: 100%; }
-section[id], div[id] { scroll-margin-top: 96px; }
+/* ===== المتغيرات والثيمات ===== */
+:root {
+  /* General */
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --transition-fast: 0.2s ease;
 
-/* ===== ثيم داكن نظيف (خلفية سوداء صافية) ===== */
-.theme-dark{
-  margin:0; min-width:320px; color:#fff;
-  background-color:#000; /* بلا نقوش ولا مكعبات */
+  /* Light Theme */
+  --background-color: #f0f0f0;
+  --text-color: #111827;
+  --glass-bg: linear-gradient( to bottom, rgba(255,255,255,0.75), rgba(255,255,255,0.55) );
+  --glass-border: rgba(0,0,0,.1);
+  --nav-cta-bg: rgba(240,240,240, .85);
+  --nav-cta-border: rgba(0,0,0,.1);
+  --nav-cta-color: #333;
+  --info-card-bg: #ffffffaa;
+  --today-row-bg: rgba(124,58,237,.1);
+  --row-muted-bg: rgba(0,0,0,.03);
+  --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
 }
+
+.theme-dark {
+  /* Dark Theme */
+  --background-color: #000;
+  --text-color: #fff;
+  --glass-bg: linear-gradient( to bottom, rgba(10,10,10,0.55), rgba(10,10,10,0.35) );
+  --glass-border: rgba(255,255,255,.12);
+  --nav-cta-bg: rgba(12,12,12,.55);
+  --nav-cta-border: rgba(255,255,255,.16);
+  --nav-cta-color: #fff;
+  --info-card-bg: #0a0a0a66;
+  --today-row-bg: rgba(124,58,237,.15);
+  --row-muted-bg: rgba(255,255,255,.05);
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* ===== أساسيات ===== */
+* { font-family: 'Cairo', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+html, body { 
+  height: 100%;
+  margin:0; min-width:320px; color:#fff;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+section[id], div[id] { scroll-margin-top: 96px; }
+.container { width: 90%; max-width: 1200px; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.p-4 { padding: 1rem; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 0.5rem; }
+.text-2xl { font-size: 1.5rem; }
+.font-bold { font-weight: 700; }
 
 /* تأثيرات */
 @keyframes neonGlow{
@@ -18,6 +63,13 @@ section[id], div[id] { scroll-margin-top: 96px; }
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
 @keyframes marquee{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* ===== شريط التنقل (Navbar) ===== */
+.navbar-container {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
 
 .hero-title{
   background:linear-gradient(45deg,#00d4ff,#8b5cf6); background-size:200% 200%;
@@ -32,19 +84,19 @@ section[id], div[id] { scroll-margin-top: 96px; }
 
 /* زجاجي */
 .glass{
-  background: linear-gradient( to bottom, rgba(10,10,10,0.55), rgba(10,10,10,0.35) );
-  border:1px solid rgba(255,255,255,.12);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 
 /* أزرار الملاحة */
 .nav-cta{
-  --ring: 0 0 0 0 rgba(255,255,255,.25);
   display:inline-flex; align-items:center; gap:.6rem;
   padding:.75rem 1.1rem; border-radius:14px; font-weight:800; letter-spacing:.2px;
-  border:1px solid rgba(255,255,255,.16); background:rgba(12,12,12,.55);
-  box-shadow: var(--ring), 0 8px 28px rgba(0,0,0,.35); transition:.25s; color:#fff;
+  border:1px solid var(--nav-cta-border); background: var(--nav-cta-bg);
+  box-shadow: 0 8px 28px rgba(0,0,0,.35); transition:.25s; color: var(--nav-cta-color);
+  cursor: pointer;
 }
 .nav-cta span{ margin-top:1px }
 .nav-cta i{ font-size:1rem }
@@ -70,24 +122,27 @@ section[id], div[id] { scroll-margin-top: 96px; }
   font-size:clamp(28px,4vw,40px); font-weight:900; text-shadow:0 3px 20px rgba(0,0,0,.4);
   background:linear-gradient(45deg,#00d4ff,#8b5cf6);
   -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  margin-bottom: 3rem;
 }
-.page-content{ animation:fadeIn .6s ease-out }
+.text-center { text-align: center; }
 
-/* ===== HERO بالصورة (صورة واحدة) ===== */
+.section-padding {
+  padding: 4rem 1rem;
+}
+
 .hero-bg {
-  position: relative;
+  position: relative; overflow: hidden;
   height: clamp(360px, 52vw, 640px);
-  background-image: url('https://i.postimg.cc/y8tfTkdP/image.png');
-  background-size: contain;      /* نبين الصورة كاملة */
-  background-color: #000;        /* جوانب سوداء إذا بقى فراغ */
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(135deg, #000000, #0c0a1d, #1a0f3d);
+  background-size: 400% 400%;
+  animation: movingGradient 10s ease infinite;
 }
 .hero-overlay{
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.20) 60%, rgba(0,0,0,.55) 100%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.9) 100%);
   display:flex; align-items:center; justify-content:center; text-align:center; padding: 0 16px;
 }
+
 .hero-inner{ max-width: 1100px; width: 100%; margin: 0 auto; }
 .hero-heading{
   font-weight: 900;
@@ -107,17 +162,61 @@ section[id], div[id] { scroll-margin-top: 96px; }
 
 /* بطاقات معلومات الاتصال */
 .info-card{
-  display:flex; gap:12px; align-items:center; padding:14px 16px;
-  background:#0a0a0a66; border:1px solid rgba(255,255,255,.12); border-radius:16px;
+  display:flex; gap:12px; align-items:center; padding:14px 16px; transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: var(--info-card-bg); border:1px solid var(--glass-border); border-radius: var(--radius-md);
 }
+.info-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 .info-icon{ width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px }
+
+/* ===== قسم أسطول الدراجات ===== */
+.bikes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.bike-card {
+  background: var(--info-card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: var(--card-shadow);
+}
+
+.bike-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.bike-card-img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  margin-bottom: 1.5rem;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+}
+
+.bike-card-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.bike-card-desc {
+  opacity: 0.8;
+  line-height: 1.6;
+}
 
 /* صندوق متدرّج */
 .gradient-box{ background: linear-gradient(135deg, #7c3aed, #2563eb) }
 
 /* جدول الساعات */
-.today-row{ background:rgba(124,58,237,.15); border:2px solid rgba(124,58,237,.5) }
-.row-muted{ background:rgba(255,255,255,.05) }
+.today-row{ background: var(--today-row-bg); border:2px solid rgba(124,58,237,.5) }
+.row-muted{ background: var(--row-muted-bg) }
 
 /* أزرار عامة */
 .btn-primary{
@@ -135,7 +234,12 @@ section[id], div[id] { scroll-margin-top: 96px; }
 .btn-primary:hover::before{ left:100% }
 
 /* فوتر */
-footer .glass { box-shadow: 0 10px 40px rgba(0,0,0,.35); }
+.main-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+  box-shadow: 0 -10px 40px rgba(0,0,0,.35);
+}
 input::placeholder, textarea::placeholder { color: #9ca3af; }
 
 /* منيو اللغة (احتياطي لو بغيت ترجعها لاحقاً) */
@@ -144,7 +248,7 @@ input::placeholder, textarea::placeholder { color: #9ca3af; }
 /* بانر كبير */
 .mega-banner { position: relative; }
 .mega-banner-inner{
-  position: relative;
+  position: relative; z-index: 1;
   border-radius: 22px;
   padding: 14px 18px;
   background: linear-gradient( to right, rgba(16,16,16,.85), rgba(16,16,16,.55) );
@@ -206,3 +310,34 @@ input::placeholder, textarea::placeholder { color: #9ca3af; }
   transition: width .6s ease;
 }
 .chrono-hint{ opacity:.85; font-size:.85rem; }
+
+/* ===== قسم الأسعار ===== */
+.pricing-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.pricing-card {
+    background: var(--info-card-bg);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 350px;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-card:hover {
+    transform: translateY(-8px);
+    border-color: #8b5cf6;
+}
+
+.pricing-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 1rem; }
+.pricing-price { font-size: 2.5rem; font-weight: 900; margin-bottom: 1.5rem; }
+.pricing-price span { font-size: 1rem; font-weight: 400; opacity: 0.7; }
+.pricing-features { list-style: none; padding: 0; margin: 0; text-align: right; }
+.pricing-features li { padding: 0.75rem 0; border-bottom: 1px solid var(--glass-border); }
+.pricing-features li:last-child { border-bottom: none; }
